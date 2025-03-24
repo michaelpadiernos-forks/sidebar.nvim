@@ -115,6 +115,15 @@ local function get_lines_and_hl(sections_data)
             table.insert(lines, line)
         end
 
+        local function sanitize_lines(lines)
+            local lines_ = {}
+            for _, line_ in ipairs(lines) do
+                local line = string.gsub(line_, '[\n\r]', ' ')
+                table.insert(lines_, line)
+            end
+            return lines_
+        end
+    
         local section_lines, section_hl = expand_section_lines(data.lines, #lines)
 
         table.insert(section_line_indexes, {
@@ -127,6 +136,8 @@ local function get_lines_and_hl(sections_data)
         for _, line in ipairs(section_lines) do
             table.insert(lines, line)
         end
+
+        lines = sanitize_lines(lines)
 
         for _, hl_entry in ipairs(section_hl or {}) do
             table.insert(hl, hl_entry)
